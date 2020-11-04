@@ -27,7 +27,7 @@ def main():
     print("次数：12")
 
     # change to your target
-    host = '192.168.1.106dfdf
+    host = '192.168.1.106'
     port = 3389
 
     times = 4000
