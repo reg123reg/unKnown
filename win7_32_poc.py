@@ -24,7 +24,7 @@ def pool_spray(s, crypter, payload):
             quit()
 
 def main():
-    print("次数：12")
+    print("次数：13")
 
     # change to your target
     host = '192.168.1.106'
