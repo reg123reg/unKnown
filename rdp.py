@@ -341,7 +341,9 @@ def free_32(crypter):
     packet_sig = crypter.sign(packet)
     packet_enc = crypter.encrypt(packet)
 
-    print(b'输出的内容是:' + packet_hdr + sec_hdr + packet_sig + packet_enc)
+    print("以下为输出内容：")
+
+    print(packet_hdr + sec_hdr + packet_sig + packet_enc)
 
     to_send = binascii.unhexlify('000000000200000000000000000000005A5A')
 
