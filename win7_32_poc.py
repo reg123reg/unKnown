@@ -28,7 +28,7 @@ def pool_spray(s, crypter, payload):
 def main():
 
 
-    print("正在使用新代码 直接上传 6")
+    print("正在使用新代码 直接上传 7")
     # change to your target
     host = '192.168.1.106'
     port = 3389
